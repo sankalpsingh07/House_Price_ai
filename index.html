@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>California House Price Predictor | Dashboard Sandbox</title>
+    
+    <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <link rel="stylesheet" href="styles.css?v=2.6">
+</head>
+<body>
+    <!-- Decorative background elements -->
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+    <div class="bg-orb orb-3"></div>
+
+    <!-- 1. LANDING PAGE VIEW -->
+    <div id="landing-view" class="landing-container">
+        <!-- Top bar for landing -->
+        <header class="top-bar">
+            <div class="logo-container">
+                <i class="fa-solid fa-brain-circuit logo-icon"></i>
+                <span class="logo-text">HousePrice<span class="text-gradient">AI</span></span>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-secondary btn-sm" id="landing-login-btn" onclick="showAuthView('login')" style="border: 1px solid rgba(0,0,0,0.08); background: var(--white); font-weight: 700; font-size: 0.75rem; padding: 0.4rem 0.85rem; border-radius: var(--radius-sm); cursor: pointer; display: flex; align-items: center; gap: 0.35rem;">
+                    <i class="fa-solid fa-arrow-right-to-bracket text-purple"></i>
+                    <span>Login / Sign Up</span>
+                </button>
+                <div class="tech-tag">
+                    <i class="fa-brands fa-python text-blue"></i>
+                    <span>Python 3.10</span>
+                </div>
+                <div class="tech-tag">
+                    <i class="fa-solid fa-microchip text-purple"></i>
+                    <span>Scikit-Learn</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Landing Hero -->
+        <div class="hero-section card">
+            <div class="hero-content">
+                <span class="badge" style="background: rgba(99, 102, 241, 0.08); color: var(--primary); font-weight: 750;">Machine Learning Pipeline Project</span>
+                <h1>Predict California <span class="text-gradient font-bold">House Prices</span> using Linear Regression</h1>
+                <p class="hero-desc">
+                    Explore an end-to-end interactive simulation of a Machine Learning workflow. From raw data loading, exploratory visualizations, data cleaning, model training, and performance metrics, to making real-time interactive predictions.
+                </p>
+                <div class="hero-buttons" style="display: flex; gap: 1rem; align-items: center;">
+                    <button class="btn btn-primary" onclick="openDashboard('overview')">
+                        <span>Get Started</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                    <button class="btn btn-secondary" onclick="openDashboard('prediction')" style="display: inline-flex; align-items: center; gap: 0.75rem; border: 1px solid rgba(0, 0, 0, 0.08); background: #ffffff;">
+                        <i class="fa-solid fa-play" style="font-size: 0.85rem; color: var(--text-main);"></i>
+                        <span style="text-decoration: underline; text-underline-offset: 3.5px; text-decoration-thickness: 1.5px; font-weight: 700;">Interactive Prediction</span>
+                    </button>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="illustration-container">
+                    <div class="floating-orb purple-glow"></div>
+                    <svg class="floating-svg" viewBox="0 0 500 500" width="100%" height="100%">
+                        <defs>
+                            <linearGradient id="houseGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#4F46E5" />
+                                <stop offset="100%" stop-color="#06B6D4" />
+                            </linearGradient>
+                            <linearGradient id="roofGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#8B5CF6" />
+                                <stop offset="100%" stop-color="#EC4899" />
+                            </linearGradient>
+                        </defs>
+                        <!-- Grid Background -->
+                        <path d="M 50,350 L 450,350 M 50,300 L 450,300 M 50,250 L 450,250 M 50,200 L 450,200" stroke="rgba(0,0,0,0.05)" stroke-width="2" />
+                        <path d="M 100,150 L 100,400 M 200,150 L 200,400 M 300,150 L 300,400 M 400,150 L 400,400" stroke="rgba(0,0,0,0.05)" stroke-width="2" stroke-dasharray="4" />
+                        
+                        <!-- Regression Line -->
+                        <line x1="80" y1="380" x2="420" y2="160" stroke="#EC4899" stroke-width="4" stroke-linecap="round" stroke-dasharray="8 4" />
+                        <circle cx="200" cy="290" r="8" fill="#4F46E5" />
+                        <circle cx="280" cy="245" r="8" fill="#06B6D4" />
+                        <circle cx="340" cy="210" r="8" fill="#8B5CF6" />
+
+                        <!-- House illustration -->
+                        <g transform="translate(130, 160)">
+                            <rect x="30" y="100" width="180" height="130" rx="12" fill="url(#houseGrad)" opacity="0.9" />
+                            <polygon points="10,100 120,20 230,100" fill="url(#roofGrad)" />
+                            <rect x="60" y="125" width="40" height="40" rx="6" fill="#FFFFFF" opacity="0.85" />
+                            <rect x="140" y="125" width="40" height="40" rx="6" fill="#FFFFFF" opacity="0.85" />
+                            <rect x="100" y="180" width="40" height="50" rx="4" fill="#1E293B" />
+                            <circle cx="130" cy="205" r="3" fill="#E2E8F0" />
+                        </g>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mockup aligned Features list -->
+        <div class="features-grid">
+            <div class="feature-card card" onclick="openDashboard('training')" style="cursor: pointer;">
+                <div class="feature-icon bg-blue-light"><i class="fa-solid fa-sliders text-blue"></i></div>
+                <h3 class="font-bold">Interactive Model Setup</h3>
+                <p class="text-muted" style="font-size: 0.825rem; line-height: 1.5;">Adjust data split parameters, train models, and view updates dynamically.</p>
+            </div>
+            <div class="feature-card card" onclick="openDashboard('eda')" style="cursor: pointer;">
+                <div class="feature-icon bg-purple-light"><i class="fa-solid fa-chart-pie text-purple"></i></div>
+                <h3 class="font-bold">Interactive Visuals</h3>
+                <p class="text-muted" style="font-size: 0.825rem; line-height: 1.5;">Rich correlation heatmaps, regression plots, and residual error diagnostics.</p>
+            </div>
+            <div class="feature-card card" onclick="openDashboard('downloads')" style="cursor: pointer;">
+                <div class="feature-icon bg-teal-light"><i class="fa-solid fa-file-arrow-down text-teal"></i></div>
+                <h3 class="font-bold">Download Center</h3>
+                <p class="text-muted" style="font-size: 0.825rem; line-height: 1.5;">Get the fully trained model <code class="code-badge">.pkl</code>, Jupyter Notebook, CSV dataset, and project report.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. MAIN DASHBOARD WORKSPACE VIEW -->
+    <div id="dashboard-workspace-view" class="app-workspace hidden">
+        
+        <!-- Sticky Left Sidebar -->
+        <aside class="sidebar card">
+            <div class="brand" onclick="exitDashboardToLanding()">
+                <i class="fa-solid fa-brain-circuit logo-icon"></i>
+                <span class="logo-text">HousePrice<span class="text-gradient">AI</span></span>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <button class="nav-btn active" id="nav-overview" onclick="switchDashboardTab('overview')">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Overview</span>
+                </button>
+                <button class="nav-btn" id="nav-eda" onclick="switchDashboardTab('eda')">
+                    <i class="fa-solid fa-chart-column"></i>
+                    <span>EDA Visuals</span>
+                </button>
+                <button class="nav-btn" id="nav-training" onclick="switchDashboardTab('training')">
+                    <i class="fa-solid fa-gears"></i>
+                    <span>Model Training</span>
+                </button>
+                <button class="nav-btn" id="nav-prediction" onclick="switchDashboardTab('prediction')">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    <span>Interactive Prediction</span>
+                </button>
+                <button class="nav-btn" id="nav-portfolio" onclick="switchDashboardTab('portfolio')">
+                    <i class="fa-solid fa-briefcase"></i>
+                    <span>Portfolio Planner</span>
+                </button>
+                <button class="nav-btn" id="nav-sql" onclick="switchDashboardTab('sql')">
+                    <i class="fa-solid fa-terminal"></i>
+                    <span>SQL Console</span>
+                </button>
+                <button class="nav-btn" id="nav-downloads" onclick="switchDashboardTab('downloads')">
+                    <i class="fa-solid fa-cubes"></i>
+                    <span>Model Downloads</span>
+                </button>
+                <button class="nav-btn" id="nav-report" onclick="switchDashboardTab('report')">
+                    <i class="fa-solid fa-file-lines"></i>
+                    <span>Project Report</span>
+                </button>
+                <button class="nav-btn" id="nav-profile" onclick="switchDashboardTab('profile')">
+                    <i class="fa-solid fa-code"></i>
+                    <span>Developer Profile</span>
+                </button>
+            </nav>
+
+            <button class="btn btn-secondary btn-sm sidebar-exit-btn" onclick="exitDashboardToLanding()" style="margin-bottom: 0.5rem; width: 100%;">
+                <i class="fa-solid fa-house"></i>
+                <span>Back to Home</span>
+            </button>
+            <button class="btn btn-danger btn-sm sidebar-exit-btn" onclick="signOutUser()" style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); color: var(--danger); width: 100%;">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                <span>Sign Out</span>
+            </button>
+        </aside>
+
+        <!-- Right Main Viewport Area -->
+        <main class="main-content-panel">
+            
+            <!-- Global Dashboard Top Bar -->
+            <header class="top-bar-workspace pb-4 mb-6">
+                <div>
+                    <h2 id="workspace-title-text" class="font-bold text-gradient">Dashboard Overview</h2>
+                    <p id="workspace-subtitle-text" class="text-muted" style="font-size: 0.85rem;">Manage the Linear Regression pipeline features and dataset records.</p>
+                </div>
+                <div class="header-actions" style="display: flex; gap: 0.5rem; align-items: center;">
+                    <div class="tech-tag" style="background: rgba(16, 185, 129, 0.05); border-color: rgba(16, 185, 129, 0.1); color: var(--success); margin: 0;">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span>Model: Trained</span>
+                    </div>
+                    <!-- User Session Profile Badge -->
+                    <div id="workspace-user-badge" class="tech-tag hidden" style="background: rgba(99, 102, 241, 0.05); border-color: rgba(99, 102, 241, 0.1); color: var(--primary); margin: 0;">
+                        <i class="fa-solid fa-circle-user"></i>
+                        <span id="workspace-user-name">Guest User</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- VIEW 1: OVERVIEW & DATASET -->
+            <div id="view-overview" class="view-panel active">
+                <div class="metrics-summary">
+                    <div class="metric-card card">
+                        <span class="metric-label">Dataset Records</span>
+                        <h2 class="metric-value">20,640</h2>
+                        <span class="metric-sub text-teal"><i class="fa-solid fa-list"></i> Census Block Groups</span>
+                    </div>
+                    <div class="metric-card card">
+                        <span class="metric-label">Features (Inputs)</span>
+                        <h2 class="metric-value">8</h2>
+                        <span class="metric-sub text-blue"><i class="fa-solid fa-sliders"></i> Numerical Columns</span>
+                    </div>
+                    <div class="metric-card card">
+                        <span class="metric-label">Target (Output)</span>
+                        <h2 class="metric-value">1</h2>
+                        <span class="metric-sub text-purple"><i class="fa-solid fa-house"></i> Median House Value</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-3-1 mt-6">
+                    <div class="table-card flex-column">
+                        <div class="card-header-flex" style="display: flex; justify-content: space-between; align-items: center;">
+                            <h4>California Sample Rows</h4>
+                            <div class="search-bar-wrapper">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                <input type="text" id="overview-search-input" placeholder="Search rows..." oninput="filterOverviewTable()">
+                            </div>
+                        </div>
+                        
+                        <div class="table-container mt-4">
+                            <table id="overview-table">
+                                <thead>
+                                    <tr>
+                                        <th>Income ($10k)</th>
+                                        <th>Age</th>
+                                        <th>Rooms</th>
+                                        <th>Bedrooms</th>
+                                        <th>Population</th>
+                                        <th>Occupancy</th>
+                                        <th>Lat</th>
+                                        <th>Lon</th>
+                                        <th>Value ($)</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="overview-table-body">
+                                    <!-- Dynamic Rows -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="table-pagination mt-4">
+                            <button class="btn btn-secondary btn-sm" id="ov-prev-btn" onclick="paginateOverview(-1)">Prev</button>
+                            <span id="ov-page-indicator">Page 1 of 5</span>
+                            <button class="btn btn-secondary btn-sm" id="ov-next-btn" onclick="paginateOverview(1)">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="dataset-side-panel flex-column gap-6">
+                        <div class="side-card">
+                            <h5><i class="fa-solid fa-circle-info text-blue"></i> Column Directory</h5>
+                            <div class="features-mini-list mt-4">
+                                <div class="mini-feat-item" title="Median Income in block group"><span class="feat-name">Median_Income</span> <span class="feat-type">Input</span></div>
+                                <div class="mini-feat-item" title="Median age of houses in block"><span class="feat-name">House_Age</span> <span class="feat-type">Input</span></div>
+                                <div class="mini-feat-item" title="Average rooms per household"><span class="feat-name">Ave_Rooms</span> <span class="feat-type">Input</span></div>
+                                <div class="mini-feat-item" title="Average bedrooms per household"><span class="feat-name">Ave_Bedrooms</span> <span class="feat-type">Input</span></div>
+                                <div class="mini-feat-item" title="Block population"><span class="feat-name">Population</span> <span class="feat-type">Input</span></div>
+                                <div class="mini-feat-item" title="Average occupancy size"><span class="feat-name">Ave_Occupancy</span> <span class="feat-type">Input</span></div>
+                                <div class="mini-feat-item" title="Centroid Latitude"><span class="feat-name">Latitude</span> <span class="feat-type">Input</span></div>
+                                <div class="mini-feat-item" title="Centroid Longitude"><span class="feat-name">Longitude</span> <span class="feat-type">Input</span></div>
+                                <div class="mini-feat-item" title="Median home value"><span class="feat-name">House_Value</span> <span class="feat-target">Target</span></div>
+                            </div>
+                        </div>
+                        
+                        <div class="side-card bg-purple-light-card">
+                            <h5><i class="fa-solid fa-lightbulb text-purple"></i> Fun Fact</h5>
+                            <p class="fun-fact-text mt-2">
+                                Scikit-learn's California dataset is fetched from the 1990 U.S. Census data. It captures historical pricing benchmarks in the state during the early tech expansion.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW 2: EDA VISUALS -->
+            <div id="view-eda" class="view-panel hidden">
+                <div class="grid grid-3-1">
+                    <div class="flex-column">
+                        <div class="chart-tabs mb-4">
+                            <button class="chart-tab active" onclick="switchOverviewEDAChart('income-scatter')">Income vs Value</button>
+                            <button class="chart-tab" onclick="switchOverviewEDAChart('correlation')">Correlation Heatmap</button>
+                            <button class="chart-tab" onclick="switchOverviewEDAChart('distribution')">Price Distribution</button>
+                            <button class="chart-tab" onclick="switchOverviewEDAChart('house-age')">House Age Histogram</button>
+                        </div>
+                        
+                        <div class="chart-wrapper card p-4">
+                            <canvas id="overview-eda-canvas"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="flex-column gap-6">
+                        <div class="side-card">
+                            <h5>Target Variable Statistics</h5>
+                            <div class="stats-mini-grid mt-4">
+                                <div class="stat-mini-card">
+                                    <span class="label">Mean Price</span>
+                                    <div class="val">$206,855</div>
+                                </div>
+                                <div class="stat-mini-card">
+                                    <span class="label">Median Price</span>
+                                    <div class="val">$179,700</div>
+                                </div>
+                                <div class="stat-mini-card">
+                                    <span class="label">Std Dev</span>
+                                    <div class="val">$115,395</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="insights-panel">
+                            <h5><i class="fa-solid fa-brain text-purple"></i> Interactive Insights</h5>
+                            <div class="insights-list mt-3">
+                                <div class="insight-item">
+                                    <i class="fa-solid fa-arrow-trend-up text-teal"></i>
+                                    <span>R = 0.688: Median Income is by far the strongest linear predictor of price.</span>
+                                </div>
+                                <div class="insight-item">
+                                    <i class="fa-solid fa-circle-exclamation text-danger"></i>
+                                    <span>Clipped values: Outliers above $500k are capped at $500,001.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW 3: MODEL TRAINING -->
+            <div id="view-training" class="view-panel hidden">
+                <div class="grid grid-2">
+                    <div class="card p-6">
+                        <h4>Partition Splitter & Slider</h4>
+                        <p class="text-muted mt-2" style="font-size: 0.8rem;">Adjust the training subset split ratio. Standard index uses 80/20.</p>
+                        
+                        <div class="slider-group-card mt-6">
+                            <div class="slider-meta-header">
+                                <span>Training Split Ratio</span>
+                                <span id="ov-split-label" class="font-bold text-gradient">80%</span>
+                            </div>
+                            <input type="range" id="ov-split-slider" min="50" max="95" value="80" step="5" oninput="updateOverviewSplitSlider()">
+                        </div>
+
+                        <div class="split-visualizer-bar mt-6">
+                            <div class="bar-track">
+                                <div class="bar-fill-train" id="ov-train-bar" style="width: 80%;">
+                                    <span id="ov-train-bar-lbl">80% Train</span>
+                                </div>
+                                <div class="bar-fill-test" id="ov-test-bar" style="width: 20%;">
+                                    <span id="ov-test-bar-lbl">20% Test</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card p-6 flex-column justify-between">
+                        <h4>Fit Model Console</h4>
+                        
+                        <div class="training-console mt-4" id="ov-training-console-log">
+                            <div class="console-line text-blue">> Ordinary Least Squares (OLS) weights ready to calculate...</div>
+                        </div>
+                        
+                        <div class="console-action-row mt-4" style="display: flex; justify-content: space-between; align-items: center;">
+                            <button class="btn btn-primary btn-sm" id="ov-train-action-btn" onclick="runOverviewModelTraining()">
+                                <i class="fa-solid fa-play"></i>
+                                <span>Train Model</span>
+                            </button>
+                            <span class="status-tag" id="ov-training-status">Status: Idle</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card p-6 mt-6">
+                    <h4>Mathematical Fitting Slopes</h4>
+                    <div class="equation-box font-mono mt-4 text-gradient">
+                        Estimated Price = Intercept + (&beta;₁ * Income) + (&beta;₂ * Age) + ...
+                    </div>
+                    
+                    <div class="table-container mt-6">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Feature Name</th>
+                                    <th>Coefficients Slope (&beta;)</th>
+                                    <th>Influence Direction</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ov-coef-tbody">
+                                <tr>
+                                    <td colspan="3" class="text-center text-muted">Train the model to calculate fitting weights.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW 4: INTERACTIVE PREDICTION -->
+            <div id="view-prediction" class="view-panel hidden">
+                <div class="card p-6 mb-6" style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.03), rgba(6, 182, 212, 0.03)); border: 1px solid rgba(99, 102, 241, 0.15);">
+                    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
+                        <i class="fa-solid fa-wand-magic-sparkles text-gradient" style="font-size: 1.5rem;"></i>
+                        <h4 class="font-bold" style="margin: 0;">AI Market Value & Demographic Auto-Fill</h4>
+                    </div>
+                    <p class="text-muted" style="font-size: 0.825rem; line-height: 1.5; margin-bottom: 1rem;">Enter a location or select a city below to fetch latest demographic indicators (income, house age, coordinates) and estimate the <strong>present-day market value</strong> in today's market (2026).</p>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr; gap: 1.25rem; align-items: end;">
+                        <input type="hidden" id="vp-gemini-key" value="AIzaSyBrV0Q9iLmGCYcVfFs8ejvPRYFbOpJKdFs">
+                        <div class="form-group" style="margin-bottom: 0; width: 100%;">
+                            <label for="vp-gemini-location" style="display: block; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-light); margin-bottom: 0.35rem;">Target Location / Address</label>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <input type="text" id="vp-gemini-location" placeholder="e.g. 120 Hawthorne St, Palo Alto, CA" style="flex-grow: 1; padding: 0.65rem 0.85rem; border-radius: var(--radius-sm); border: 1px solid rgba(0,0,0,0.08); outline: none; font-size: 0.85rem; background: var(--white);">
+                                <button type="button" class="btn btn-primary btn-sm" onclick="runGeminiLocationAnalysis()" id="btn-gemini-analyze" style="padding: 0 1.25rem; white-space: nowrap; font-size: 0.825rem; border-radius: var(--radius-sm);">
+                                    <i class="fa-solid fa-sparkles"></i>
+                                    <span>Analyze Location</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="gemini-status-bar" class="hidden" style="margin-top: 1rem; font-size: 0.8rem; padding: 0.65rem 0.95rem; border-radius: var(--radius-sm); display: flex; align-items: center; gap: 0.65rem; background: rgba(99, 102, 241, 0.05); border: 1px solid rgba(99, 102, 241, 0.1); color: var(--primary);">
+                        <i class="fa-solid fa-spinner fa-spin" id="gemini-status-spinner"></i>
+                        <span id="gemini-status-text">Analyzing location demographics...</span>
+                    </div>
+                </div>
+
+                <!-- Step 1: Select House Type -->
+                <div class="mb-6">
+                    <h4 class="font-bold">1. Select House Type</h4>
+                    <div class="grid grid-3 mt-4" id="house-type-selector-grid">
+                        <div class="preset-card text-center" id="preset-apartment" onclick="selectHouseType('apartment')">
+                            <i class="fa-solid fa-building"></i>
+                            <h5 class="mt-3">Small Apartment</h5>
+                            <span class="text-muted">Standard urban block flat</span>
+                        </div>
+                        <div class="preset-card text-center" id="preset-family" onclick="selectHouseType('family')">
+                            <i class="fa-solid fa-house-chimney"></i>
+                            <h5 class="mt-3">Family House</h5>
+                            <span class="text-muted">Multi-bedroom suburban home</span>
+                        </div>
+                        <div class="preset-card text-center" id="preset-villa" onclick="selectHouseType('villa')">
+                            <i class="fa-solid fa-castle"></i>
+                            <h5 class="mt-3">Luxury Villa</h5>
+                            <span class="text-muted">Premium estate block centroid</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-3" id="prediction-grid">
+                    <!-- Form input card -->
+                    <div class="card p-6">
+                        <h4>House Specifications</h4>
+                        <form id="view-predict-specs-form" onsubmit="event.preventDefault(); runPredictionPageEstimation();" class="mt-4">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="vp-income" data-tooltip="Median income of block households (in tens of thousands). Strongly dictates regional price limits.">Median Income ($10k units)</label>
+                                    <input type="number" id="vp-income" step="0.01" min="0.1" max="15.0" required>
+                                    <span class="input-desc">Median income of block households.</span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="vp-age" data-tooltip="Median age of building structures. Established historic blocks carry positive correlation.">House Age (Years)</label>
+                                    <input type="number" id="vp-age" min="1" max="100" required>
+                                    <span class="input-desc">Median building age in block.</span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="vp-rooms" data-tooltip="Total average rooms per household. Must be a whole integer.">Average Rooms</label>
+                                    <input type="number" id="vp-rooms" step="1" min="1" max="30" required>
+                                    <span class="input-desc">Average rooms per home.</span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="vp-bedrooms" data-tooltip="Total average bedrooms per household. Must be a whole integer.">Average Bedrooms</label>
+                                    <input type="number" id="vp-bedrooms" step="1" min="1" max="15" required>
+                                    <span class="input-desc">Average bedrooms per home.</span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="vp-population" data-tooltip="Total population in the block group. Higher densities affect base occupancy metrics.">Block Population</label>
+                                    <input type="number" id="vp-population" min="5" max="100000" required>
+                                    <span class="input-desc">Total people residing in block.</span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="vp-occupancy" data-tooltip="Average occupancy size (number of people per household).">Average Occupancy</label>
+                                    <input type="number" id="vp-occupancy" step="0.1" min="0.5" max="50" required>
+                                    <span class="input-desc">Average household size.</span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="vp-latitude" data-tooltip="Centroid Latitude (North/South coordinate). Used for spatial proximity valuation.">Centroid Latitude</label>
+                                    <input type="number" id="vp-latitude" step="0.01" min="-90.0" max="90.0" required>
+                                    <span class="input-desc">North/South coordinates (-90.0 to 90.0).</span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="vp-longitude" data-tooltip="Centroid Longitude (East/West coordinate). Used for spatial proximity valuation.">Centroid Longitude</label>
+                                    <input type="number" id="vp-longitude" step="0.01" min="-180.0" max="180.0" required>
+                                    <span class="input-desc">East/West coordinates (-180.0 to 180.0).</span>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-full mt-6 btn-large">
+                                <i class="fa-solid fa-calculator"></i>
+                                <span>Predict Price</span>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Interactive Coordinates Locator Grid Card -->
+                    <div class="card p-6 flex-column justify-between" style="background: rgba(255, 255, 255, 0.7);">
+                        <div>
+                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+                                <i class="fa-solid fa-earth-americas text-gradient" style="font-size: 1.25rem;"></i>
+                                <h4 class="font-bold" style="margin: 0;">Global Locator Grid</h4>
+                            </div>
+                            <p class="text-muted" style="font-size: 0.78rem; line-height: 1.4; margin-bottom: 1rem;">Click on the coordinates grid or select a city below. The red arrow pointer will trace your coordinates (X: Longitude, Y: Latitude) globally.</p>
+                            
+                            <!-- SVG Coordinates Grid -->
+                            <div style="position: relative; width: 100%; height: 260px; background: #0f172a; border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.08); overflow: hidden; cursor: crosshair;" id="coordinate-grid-wrapper">
+                                <svg width="100%" height="100%" viewBox="0 0 100 100" id="global-coords-svg" style="display: block;">
+                                    <!-- Axes -->
+                                    <line x1="50" y1="0" x2="50" y2="100" stroke="rgba(255,255,255,0.15)" stroke-width="0.75" stroke-dasharray="2 2" /> <!-- Prime Meridian -->
+                                    <line x1="0" y1="50" x2="100" y2="50" stroke="rgba(255,255,255,0.15)" stroke-width="0.75" stroke-dasharray="2 2" /> <!-- Equator -->
+                                    
+                                    <!-- Coordinate helper grid lines -->
+                                    <line x1="25" y1="0" x2="25" y2="100" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" />
+                                    <line x1="75" y1="0" x2="75" y2="100" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" />
+                                    <line x1="0" y1="25" x2="100" y2="25" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" />
+                                    <line x1="0" y1="75" x2="100" y2="75" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" />
+                                    
+                                    <!-- Abstract world silhouette dots for context -->
+                                    <!-- North America -->
+                                    <circle cx="20" cy="35" r="4" fill="rgba(255,255,255,0.05)" />
+                                    <!-- Europe -->
+                                    <circle cx="50" cy="30" r="3" fill="rgba(255,255,255,0.05)" />
+                                    <!-- Asia -->
+                                    <circle cx="75" cy="35" r="5" fill="rgba(255,255,255,0.05)" />
+                                    <!-- South America -->
+                                    <circle cx="35" cy="70" r="3" fill="rgba(255,255,255,0.05)" />
+                                    <!-- Africa -->
+                                    <circle cx="53" cy="60" r="4" fill="rgba(255,255,255,0.05)" />
+                                    <!-- Australia -->
+                                    <circle cx="85" cy="80" r="3" fill="rgba(255,255,255,0.05)" />
+
+                                    <!-- Coordinate labels -->
+                                    <text x="52" y="10" fill="rgba(255,255,255,0.3)" font-size="3" font-family="monospace">N 90°</text>
+                                    <text x="52" y="97" fill="rgba(255,255,255,0.3)" font-size="3" font-family="monospace">S 90°</text>
+                                    <text x="2" y="47" fill="rgba(255,255,255,0.3)" font-size="3" font-family="monospace">W 180°</text>
+                                    <text x="82" y="47" fill="rgba(255,255,255,0.3)" font-size="3" font-family="monospace">E 180°</text>
+
+                                    <!-- Dynamic Pointer Arrow -->
+                                    <g id="map-arrow-pointer" transform="translate(50, 50)" style="transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);">
+                                        <!-- Arrow shape pointing to target center -->
+                                        <path d="M 0,0 L -5,-12 L 5,-12 Z" fill="#ef4444" stroke="#ffffff" stroke-width="0.75" />
+                                        <circle cx="0" cy="0" r="2.5" fill="#ef4444" stroke="#ffffff" stroke-width="0.5" />
+                                        <!-- Pulsing ring effect -->
+                                        <circle cx="0" cy="0" r="6" fill="none" stroke="#ef4444" stroke-width="0.5" opacity="0.6">
+                                            <animate attributeName="r" values="3;10;3" dur="2s" repeatCount="indefinite" />
+                                            <animate attributeName="opacity" values="0.8;0;0.8" dur="2s" repeatCount="indefinite" />
+                                        </circle>
+                                    </g>
+                                </svg>
+                            </div>
+                        </div>
+
+                        <!-- Global City Preset Radio Selectors -->
+                        <div class="mt-3">
+                            <span class="template-lbl" style="display: block; font-size: 0.72rem; text-transform: uppercase; font-weight: 700; color: var(--text-light); margin-bottom: 0.4rem;">Select Country:</span>
+                            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.4rem; margin-bottom: 0.75rem;" id="global-country-radios">
+                                <label class="radio-card">
+                                    <input type="radio" name="country-select" value="USA" onclick="selectCountry('USA')">
+                                    <span>USA</span>
+                                </label>
+                                <label class="radio-card">
+                                    <input type="radio" name="country-select" value="UK" onclick="selectCountry('UK')">
+                                    <span>UK</span>
+                                </label>
+                                <label class="radio-card">
+                                    <input type="radio" name="country-select" value="Japan" onclick="selectCountry('Japan')">
+                                    <span>Japan</span>
+                                </label>
+                                <label class="radio-card">
+                                    <input type="radio" name="country-select" value="India" onclick="selectCountry('India')">
+                                    <span>India</span>
+                                </label>
+                                <label class="radio-card" style="grid-column: span 2;">
+                                    <input type="radio" name="country-select" value="Australia" onclick="selectCountry('Australia')">
+                                    <span>Australia</span>
+                                </label>
+                            </div>
+
+                            <div id="city-selector-section" class="hidden" style="border-top: 1px dashed rgba(0,0,0,0.08); padding-top: 0.75rem;">
+                                <span class="template-lbl" style="display: block; font-size: 0.72rem; text-transform: uppercase; font-weight: 700; color: var(--text-light); margin-bottom: 0.4rem;">Select Top 5 Cities:</span>
+                                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.4rem;" id="global-city-radios">
+                                    <!-- Populated dynamically via JS -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Output Estimation Results card -->
+                    <div class="card p-6 flex-column justify-between items-center text-center">
+                        <div class="w-full">
+                            <h4>Estimation Results</h4>
+                            
+                            <!-- Idle State -->
+                            <div id="vp-idle" class="mt-8 flex-column items-center">
+                                <i class="fa-solid fa-calculator text-light" style="font-size: 4rem; color: #cbd5e1; margin-bottom: 1.5rem;"></i>
+                                <p class="text-muted">Awaiting specifications form submit...</p>
+                            </div>
+
+                            <!-- Loader State -->
+                            <div id="vp-loader" class="mt-8 flex-column items-center hidden">
+                                <div class="prediction-spinner mb-4" style="width: 48px; height: 48px; border: 4px solid var(--primary-glow); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s infinite linear; margin-bottom: 1.5rem;"></div>
+                                <h5>Calculating Valuation...</h5>
+                            </div>
+
+                            <!-- Results State -->
+                            <div id="vp-results" class="hidden">
+                                <div id="vp-results-container">
+                                    <!-- OLS Model Card -->
+                                    <div class="prediction-result-box" style="border: 1px solid rgba(79, 70, 229, 0.15); padding: 1.25rem; border-radius: var(--radius-lg); background: var(--white); text-align: center;">
+                                        <span class="label" style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--text-light); display: block;">1990 OLS Model Predictor</span>
+                                        <h1 class="result-price text-gradient" id="vp-predicted-price" style="font-size: 2.25rem; font-weight: 900; margin-top: 0.25rem;">$0.00</h1>
+                                        <div class="prediction-confidence-pill mt-3" style="display: flex; align-items: center; justify-content: center; font-size: 0.8rem;">
+                                            <span id="vp-category-badge" class="tag tag-info font-bold">Medium</span>
+                                            <span style="margin-left: 0.5rem; color: var(--text-muted);" id="vp-confidence-val">Confidence: 57.6%</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Gemini Present Value Card (Shown only when Gemini is run) -->
+                                    <div id="vp-gemini-card" class="prediction-result-box hidden" style="border: 1px solid rgba(6, 182, 212, 0.25); padding: 1.25rem; border-radius: var(--radius-lg); background: linear-gradient(135deg, rgba(6, 182, 212, 0.02), rgba(139, 92, 246, 0.02)); text-align: left;">
+                                        <span class="label" style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--secondary); display: flex; align-items: center; gap: 0.35rem; margin-bottom: 0.25rem;"><i class="fa-solid fa-sparkles"></i> Current Market Value (2026)</span>
+                                        <h1 class="result-price" id="vp-gemini-price" style="font-size: 2.25rem; font-weight: 900; margin-top: 0.25rem; color: var(--dark); background: linear-gradient(135deg, var(--secondary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">$0.00</h1>
+                                        <p id="vp-gemini-explain" style="font-size: 0.78rem; line-height: 1.4; color: var(--text-muted); margin-top: 0.5rem; border-top: 1px solid rgba(0,0,0,0.04); padding-top: 0.5rem;"></p>
+                                    </div>
+                                </div>
+                                
+                                <div class="explainability-card card mt-4 text-left p-4" style="background: rgba(255,255,255,0.7); border: 1px solid rgba(0,0,0,0.03);">
+                                    <h5 style="font-weight: 750; font-size: 0.9rem; display: flex; align-items: center; gap: 0.35rem;"><i class="fa-solid fa-circle-info text-teal"></i> Why This Price?</h5>
+                                    <p class="text-muted mt-2" id="vp-explain-text" style="font-size: 0.8rem; line-height: 1.5;"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- House illustration beating -->
+                        <div class="result-house-illustration mt-6">
+                            <i class="fa-solid fa-house-chimney result-icon-large text-gradient" style="font-size: 4rem;"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Explanation Visuals Charts -->
+                <div id="vp-visuals-panel" class="mt-8 border-t pt-8 hidden" style="border-top: 1px solid rgba(0,0,0,0.05);">
+                    <h4>Feature Impact & Benchmark Charts</h4>
+                    <div class="grid grid-2 mt-4">
+                        <div class="card p-6">
+                            <h5>Features Slopes Contribution ($k impact)</h5>
+                            <div class="chart-wrapper">
+                                <canvas id="vp-contrib-chart"></canvas>
+                            </div>
+                        </div>
+                        <div class="card p-6">
+                            <h5>Valuation Market Benchmarking</h5>
+                            <div class="chart-wrapper">
+                                <canvas id="vp-benchmark-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Supabase predictions history table -->
+                <div class="mt-8 border-t pt-8" style="border-top: 1px solid rgba(0,0,0,0.05);">
+                    <div class="card-header-flex" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                        <h4>Saved Predictions History (Supabase DB)</h4>
+                        <span class="status-tag" style="font-size: 0.72rem; color: var(--success); font-weight: 700; background: var(--success-light); padding: 0.35rem 0.75rem; border-radius: 50px; display: flex; align-items: center; gap: 0.35rem;"><i class="fa-solid fa-database"></i> Live Database Connection</span>
+                    </div>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>House Preset Category</th>
+                                    <th>Block Latitude / Longitude</th>
+                                    <th>Estimated Value</th>
+                                    <th>Calculation Timestamp</th>
+                                </tr>
+                            </thead>
+                            <tbody id="vp-history-tbody">
+                                <tr>
+                                    <td colspan="4" class="text-center text-muted">No predictions stored in backend. Run a prediction to insert rows.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="downloads-flex-row mt-6" style="display: flex; gap: 0.85rem; flex-wrap: wrap;">
+                        <button class="btn btn-secondary btn-sm" onclick="exportOverviewPredictionsCSV()">
+                            <i class="fa-solid fa-file-csv"></i>
+                            <span>Export CSV</span>
+                        </button>
+                        <button class="btn btn-secondary btn-sm" onclick="printPredictionSummary()">
+                            <i class="fa-solid fa-print"></i>
+                            <span>Print Summary</span>
+                        </button>
+                        <button class="btn btn-secondary btn-sm" onclick="downloadValuationReport()">
+                            <i class="fa-solid fa-file-pdf"></i>
+                            <span>Download PDF Report</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Footer reset -->
+                <div class="flex-column items-center mt-8 border-t pt-6" style="border-top: 1px solid rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: center;">
+                    <button class="btn btn-secondary" onclick="resetOverviewPredictionForm()">
+                        <i class="fa-solid fa-rotate-left"></i>
+                        <span>Try Another Prediction</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- VIEW 5: PORTFOLIO PLANNER -->
+            <div id="view-portfolio" class="view-panel hidden">
+                <div class="metrics-summary">
+                    <div class="metric-card card">
+                        <span class="metric-label">Cumulative Valuation</span>
+                        <h2 class="metric-value" id="portfolio-total-val">$0</h2>
+                        <span class="metric-sub text-teal"><i class="fa-solid fa-briefcase"></i> Total assets value</span>
+                    </div>
+                    <div class="metric-card card">
+                        <span class="metric-label">Active Properties</span>
+                        <h2 class="metric-value" id="portfolio-count">0</h2>
+                        <span class="metric-sub text-blue"><i class="fa-solid fa-location-dot"></i> Block centroids</span>
+                    </div>
+                    <div class="metric-card card">
+                        <span class="metric-label">Weighted Average Income</span>
+                        <h2 class="metric-value" id="portfolio-avg-inc">$0</h2>
+                        <span class="metric-sub text-purple"><i class="fa-solid fa-chart-line"></i> Block demographic avg</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-3-1 mt-6">
+                    <div class="flex-column gap-4">
+                        <h4>Saved Properties List</h4>
+                        <div class="portfolio-list-wrapper" id="portfolio-properties-list">
+                            <!-- Dynamic Properties Cards -->
+                        </div>
+                    </div>
+
+                    <div class="card p-6 flex-column justify-between">
+                        <h4>Add predicted property</h4>
+                        <p class="text-muted mt-2" style="font-size: 0.78rem;">Add custom census specifications and predict value to include in your portfolio.</p>
+                        
+                        <div class="autocopy-box mt-4">
+                            <button class="btn btn-secondary btn-sm w-full" onclick="copyPredictionSpecsToPortfolioForm()">
+                                <i class="fa-solid fa-copy"></i>
+                                <span>Copy specs from Predictor</span>
+                            </button>
+                        </div>
+                        
+                        <form id="portfolio-quick-add-form" onsubmit="event.preventDefault(); addPropertyToPortfolioTable();" class="mt-4 flex-column gap-4">
+                            <div class="form-group">
+                                <label for="port-address">Custom Address Location</label>
+                                <input type="text" id="port-address" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="port-income">Median Income ($10k units)</label>
+                                <input type="number" id="port-income" step="0.1" min="0.1" max="15.0" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="port-age">House Age (Years)</label>
+                                <input type="number" id="port-age" min="1" max="100" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-full mt-4">
+                                <i class="fa-solid fa-circle-plus"></i>
+                                <span>Predict & Add to Portfolio</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW 6: SQL CONSOLE -->
+            <div id="view-sql" class="view-panel hidden">
+                <div class="grid grid-3-1">
+                    <!-- Terminal Console area -->
+                    <div class="flex-column gap-4">
+                        <!-- AI-Powered SQL Helper Card -->
+                        <div class="card p-4" style="background: rgba(99, 102, 241, 0.03); border: 1px solid rgba(99, 102, 241, 0.1);">
+                            <h5 style="font-weight: 750; font-size: 0.85rem; display: flex; align-items: center; gap: 0.35rem; color: var(--primary); margin: 0;">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i> AI-Powered SQL Helper & Query Builder
+                            </h5>
+                            <p class="text-muted" style="font-size: 0.75rem; margin-top: 0.25rem; margin-bottom: 0.75rem;">
+                                Click any action below to instantly load and execute pre-configured queries in the terminal editor:
+                            </p>
+                            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                                <button class="btn btn-sm" style="background: rgba(139, 92, 246, 0.1); color: #8b5cf6; padding: 0.4rem 0.75rem; font-size: 0.75rem; border-radius: var(--radius-sm); font-weight: 700; border: none; cursor: pointer; transition: transform 0.15s;" onclick="setAndRunSQL('all-props', 'SELECT * FROM properties;', 'List All Properties: Fetch all real estate locations and predicted prices.')">
+                                    <i class="fa-solid fa-list"></i> List Properties
+                                </button>
+                                <button class="btn btn-sm" style="background: rgba(6, 182, 212, 0.1); color: #06b6d4; padding: 0.4rem 0.75rem; font-size: 0.75rem; border-radius: var(--radius-sm); font-weight: 700; border: none; cursor: pointer; transition: transform 0.15s;" onclick="setAndRunSQL('avg-price', 'SELECT COUNT(*), AVG(predicted_value) FROM properties;', 'Average valuation: Compute the average predicted price of all records.')">
+                                    <i class="fa-solid fa-calculator"></i> Average Price
+                                </button>
+                                <button class="btn btn-sm" style="background: rgba(16, 185, 129, 0.1); color: #10b981; padding: 0.4rem 0.75rem; font-size: 0.75rem; border-radius: var(--radius-sm); font-weight: 700; border: none; cursor: pointer; transition: transform 0.15s;" onclick="setAndRunSQL('high-val', 'SELECT * FROM properties WHERE predicted_value > 350000 ORDER BY predicted_value DESC;', 'High Value Homes: Find properties valued over $350k, sorted highest first.')">
+                                    <i class="fa-solid fa-gem"></i> Premium Properties
+                                </button>
+                                <button class="btn btn-sm" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b; padding: 0.4rem 0.75rem; font-size: 0.75rem; border-radius: var(--radius-sm); font-weight: 700; border: none; cursor: pointer; transition: transform 0.15s;" onclick="setAndRunSQL('join-port', 'SELECT properties.address, portfolios.name FROM properties JOIN portfolios ON properties.portfolio_id = portfolios.id;', 'Join Tables: Associate predicted properties with their parent investment portfolios.')">
+                                    <i class="fa-solid fa-link"></i> Join Portfolios
+                                </button>
+                                <button class="btn btn-sm" style="background: rgba(99, 102, 241, 0.1); color: var(--primary); padding: 0.4rem 0.75rem; font-size: 0.75rem; border-radius: var(--radius-sm); font-weight: 700; border: none; cursor: pointer; transition: transform 0.15s;" onclick="setAndRunSQL('all-users', 'SELECT * FROM users;', 'List Users: View user profiles registered in the database.')">
+                                    <i class="fa-solid fa-users"></i> List Users
+                                </button>
+                            </div>
+                            <div id="sql-helper-description" class="mt-3 p-3 text-muted" style="font-size: 0.78rem; background: var(--white); border-radius: var(--radius-sm); border: 1px solid rgba(0,0,0,0.04); display: none; font-weight: 600;">
+                                <!-- Explanation text -->
+                            </div>
+                        </div>
+
+                        <div class="sql-actions-bar">
+                            <span class="template-lbl" style="font-weight: 700; font-size: 0.78rem; color: var(--text-light); text-transform: uppercase;">SQL Sandbox Query Terminal</span>
+                            <span class="sql-status-info" id="sql-query-meta">Rows: 0 | Time: 0.000s</span>
+                        </div>
+
+                        <div class="sql-editor-container">
+                            <div class="editor-line-numbers">
+                                <span>1</span>
+                                <span>2</span>
+                                <span>3</span>
+                            </div>
+                            <textarea id="sql-query-input" spellcheck="false">SELECT * FROM properties ORDER BY predicted_value DESC;</textarea>
+                        </div>
+                        
+                        <div class="console-actions mt-2" style="display: flex; gap: 0.85rem;">
+                            <button class="btn btn-primary btn-sm" onclick="runSQLConsoleQuery()">
+                                <i class="fa-solid fa-play"></i>
+                                <span>Execute SQL</span>
+                            </button>
+                        </div>
+
+                        <div class="table-card mt-4 flex-column">
+                            <h5>SQL Query Result Grid</h5>
+                            <div class="table-container mt-3">
+                                <table>
+                                    <thead id="sql-results-head">
+                                        <!-- Dynamic Header -->
+                                    </thead>
+                                    <tbody id="sql-results-body">
+                                        <tr><td class="text-center text-muted">Execute query to show table rows.</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Relational Schema Diagram Map -->
+                    <div class="flex-column gap-6">
+                        <div class="side-card">
+                            <h5><i class="fa-solid fa-database text-purple"></i> Schema Database Tree</h5>
+                            <p class="text-muted mt-2" style="font-size: 0.78rem;">Relational layout seed tables.</p>
+                            
+                            <div class="schema-diagram mt-4">
+                                <div class="schema-table">
+                                    <div class="table-name">users <span class="col-type font-mono">(size: <span id="schema-users-size">1</span>)</span></div>
+                                    <div class="table-col PK"><span class="col-name">id</span> <span class="key-type">PK</span></div>
+                                    <div class="table-col"><span class="col-name">email</span> <span class="col-type">VARCHAR</span></div>
+                                    <div class="table-col"><span class="col-name">full_name</span> <span class="col-type">VARCHAR</span></div>
+                                </div>
+                                
+                                <div class="schema-relation-line"><i class="fa-solid fa-arrow-down"></i></div>
+                                
+                                <div class="schema-table">
+                                    <div class="table-name">portfolios <span class="col-type font-mono">(size: <span id="schema-portfolios-size">1</span>)</span></div>
+                                    <div class="table-col PK"><span class="col-name">id</span> <span class="key-type">PK</span></div>
+                                    <div class="table-col FK"><span class="col-name">user_id</span> <span class="key-type">FK</span></div>
+                                    <div class="table-col"><span class="col-name">name</span> <span class="col-type">VARCHAR</span></div>
+                                </div>
+                                
+                                <div class="schema-relation-line"><i class="fa-solid fa-arrow-down"></i></div>
+                                
+                                <div class="schema-table">
+                                    <div class="table-name">properties <span class="col-type font-mono">(size: <span id="schema-properties-size">2</span>)</span></div>
+                                    <div class="table-col PK"><span class="col-name">id</span> <span class="key-type">PK</span></div>
+                                    <div class="table-col FK"><span class="col-name">portfolio_id</span> <span class="key-type">FK</span></div>
+                                    <div class="table-col"><span class="col-name">address</span> <span class="col-type">VARCHAR</span></div>
+                                    <div class="table-col"><span class="col-name">median_income</span> <span class="col-type">NUMERIC</span></div>
+                                    <div class="table-col"><span class="col-name">predicted_value</span> <span class="col-type">NUMERIC</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW 7: MODEL DOWNLOADS -->
+            <div id="view-downloads" class="view-panel hidden">
+                <div class="downloads-grid">
+                    <div class="download-card card">
+                        <div class="icon-box bg-purple-light"><i class="fa-solid fa-cubes text-purple"></i></div>
+                        <h3>Trained Model</h3>
+                        <p class="file-info font-mono">house_model.pkl</p>
+                        <p class="desc">Trained scikit-learn Linear Regression pipeline weights model saved in Joblib format.</p>
+                        <a href="assets/house_model.pkl" download class="btn btn-primary w-full btn-sm">
+                            <i class="fa-solid fa-file-arrow-down"></i>
+                            <span>Download Model</span>
+                        </a>
+                    </div>
+                    
+                    <div class="download-card card">
+                        <div class="icon-box bg-blue-light"><i class="fa-solid fa-book text-blue"></i></div>
+                        <h3>Jupyter Notebook</h3>
+                        <p class="file-info font-mono">house_price_predictor.ipynb</p>
+                        <p class="desc">Interactive workbook explaining OLS fitting equations, data cleaning, and residual plotting.</p>
+                        <a href="house_price_predictor.ipynb" download class="btn btn-primary w-full btn-sm">
+                            <i class="fa-solid fa-file-arrow-down"></i>
+                            <span>Download Notebook</span>
+                        </a>
+                    </div>
+                    
+                    <div class="download-card card">
+                        <div class="icon-box bg-teal-light"><i class="fa-solid fa-file-csv text-teal"></i></div>
+                        <h3>Census Dataset</h3>
+                        <p class="file-info font-mono">california_housing.csv</p>
+                        <p class="desc">Raw database CSV table containing 20,640 census block records.</p>
+                        <a href="assets/california_housing.csv" download class="btn btn-primary w-full btn-sm">
+                            <i class="fa-solid fa-file-arrow-down"></i>
+                            <span>Download CSV</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW 8: PROJECT REPORT -->
+            <div id="view-report" class="view-panel hidden">
+                <div class="report-paper">
+                    <div class="report-header">
+                        <h1>Regression Pipeline Analysis Report</h1>
+                        <p class="subtitle">California Housing Valuation Model</p>
+                        <div class="divider"></div>
+                    </div>
+                    
+                    <div class="report-section">
+                        <h3>1. Model Objective & Background</h3>
+                        <p>
+                            This project implements an Ordinary Least Squares (OLS) Linear Regression estimator targeting median house prices in California block groups. By analyzing demographic metrics (household sizes, rooms, geographic slopes), the estimator establishes weights coordinates explaining regional valuations.
+                        </p>
+                    </div>
+
+                    <div class="report-section">
+                        <h3>2. Optimization Fitting Metrics</h3>
+                        <table class="report-metrics-table">
+                            <thead>
+                                <tr>
+                                    <th>Optimization Parameter</th>
+                                    <th>Model Benchmark Metric Value</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Mean Absolute Error (MAE)</td>
+                                    <td>$53,320.01</td>
+                                </tr>
+                                <tr>
+                                    <td>Root Mean Sq. Error (RMSE)</td>
+                                    <td>$74,558.14</td>
+                                </tr>
+                                <tr>
+                                    <td>Coefficient of Determination (R²)</td>
+                                    <td>0.5758 (57.58%)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="report-section">
+                        <h3>3. Features Influencing Slopes</h3>
+                        <ul>
+                            <li><strong>Median Income:</strong> Strongest positive weight coefficient. Affluent areas show significant price gains.</li>
+                            <li><strong>House Age:</strong> Gentle positive trend. Established blocks carrying historic or premium value scores.</li>
+                            <li><strong>Average Occupants:</strong> Negative correlation weight. Overcrowded blocks exhibit reduced value indexes.</li>
+                        </ul>
+                    </div>
+
+                    <div class="report-footer">
+                        <span>Report Date: <strong id="report-date">July 2026</strong></span>
+                        <span>HousePriceAI Project Core</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW 9: DEVELOPER PROFILE -->
+            <div id="view-profile" class="view-panel hidden">
+                <div class="card p-8 developer-card">
+                    <div class="dev-flex">
+                        <div class="dev-avatar" style="overflow: hidden;">
+                            <img src="assets/profile.jpg" alt="Sankalp Singh" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                        <div class="dev-info flex-column gap-4">
+                            <div>
+                                <span class="badge badge-purple">CSE Student & Developer</span>
+                                <h2>Sankalp Singh</h2>
+                                <p class="text-muted mt-2">Bachelor of Technology in Computer Science & Engineering</p>
+                            </div>
+                            
+                            <p class="dev-bio">
+                                Bachelor of Technology student in Computer Science & Engineering. Specialized in constructing interactive educational workspaces, OLS pipeline math solvers, and relational database simulator console terminals. Passionate about software engineering, data science, and web systems.
+                            </p>
+                            
+                            <div class="dev-tags">
+                                <span class="tag tag-info">Python</span>
+                                <span class="tag tag-purple">Scikit-Learn</span>
+                                <span class="tag tag-success">PostgreSQL</span>
+                                <span class="tag tag-danger">Chart.js</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- 3. AUTHENTICATION (LOGIN/SIGNUP) VIEW -->
+    <div id="auth-view" class="auth-page hidden">
+        <div class="auth-card">
+            <div class="auth-header text-center mb-6">
+                <div class="logo-container mb-2" style="justify-content: center; display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="fa-solid fa-brain-circuit logo-icon text-gradient" style="font-size: 1.8rem;"></i>
+                    <span class="logo-text" style="color: var(--white); font-weight: 800; font-size: 1.3rem;">HousePrice<span class="text-gradient">AI</span></span>
+                </div>
+                <h3 id="auth-card-title" class="font-bold text-gradient" style="font-size: 1.25rem; text-align: center;">Sign In to Dashboard</h3>
+                <p id="auth-card-subtitle" class="text-muted mt-1" style="font-size: 0.8rem; color: rgba(255,255,255,0.6) !important; text-align: center;">Unlock full OLS regression and API demographics analysis.</p>
+            </div>
+
+            <!-- Validation Error Alert Box -->
+            <div id="auth-error-alert" class="hidden mb-4 p-3" style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: var(--radius-sm); color: #fca5a5; font-size: 0.78rem; text-align: center; font-weight: 600;">
+                <!-- Error text dynamic -->
+            </div>
+
+            <!-- Login Method Selector Tabs -->
+            <div class="auth-tabs mb-4" style="display: flex; background: rgba(255,255,255,0.06); padding: 0.25rem; border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.08);">
+                <button type="button" class="auth-tab-btn active" id="auth-tab-email" onclick="switchAuthMethod('email')" style="flex: 1; border: none; background: transparent; color: rgba(255,255,255,0.6); padding: 0.45rem; font-size: 0.75rem; font-weight: 700; border-radius: var(--radius-xs); cursor: pointer; transition: all 0.2s;">
+                    <i class="fa-solid fa-envelope"></i> Email
+                </button>
+                <button type="button" class="auth-tab-btn" id="auth-tab-phone" onclick="switchAuthMethod('phone')" style="flex: 1; border: none; background: transparent; color: rgba(255,255,255,0.6); padding: 0.45rem; font-size: 0.75rem; font-weight: 700; border-radius: var(--radius-xs); cursor: pointer; transition: all 0.2s;">
+                    <i class="fa-solid fa-phone"></i> Phone Number
+                </button>
+            </div>
+
+            <form id="auth-form" onsubmit="event.preventDefault(); submitAuthForm();">
+                <!-- User Full Name (Signup Only) -->
+                <div class="form-group mb-3 hidden" id="auth-group-name">
+                    <label class="form-label" style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: rgba(255,255,255,0.7); display: block; margin-bottom: 0.35rem;">Full Name</label>
+                    <input type="text" id="auth-input-name" placeholder="John Doe" style="width: 100%; padding: 0.65rem 0.85rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius-sm); color: var(--white); font-size: 0.85rem;">
+                </div>
+
+                <!-- EMAIL METHOD FIELDS -->
+                <div id="auth-method-fields-email">
+                    <div class="form-group mb-3">
+                        <label class="form-label" style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: rgba(255,255,255,0.7); display: block; margin-bottom: 0.35rem;">Email Address</label>
+                        <input type="email" id="auth-input-email" placeholder="you@domain.com" style="width: 100%; padding: 0.65rem 0.85rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius-sm); color: var(--white); font-size: 0.85rem;">
+                    </div>
+                    <div class="form-group mb-4">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+                            <label class="form-label" style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: rgba(255,255,255,0.7); margin: 0;">Password</label>
+                        </div>
+                        <input type="password" id="auth-input-password" placeholder="••••••••" style="width: 100%; padding: 0.65rem 0.85rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius-sm); color: var(--white); font-size: 0.85rem;">
+                    </div>
+                </div>
+
+                <!-- PHONE METHOD FIELDS (OTP verification flow) -->
+                <div id="auth-method-fields-phone" class="hidden">
+                    <div class="form-group mb-3">
+                        <label class="form-label" style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: rgba(255,255,255,0.7); display: block; margin-bottom: 0.35rem;">Phone Number</label>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <select id="auth-input-phone-prefix" style="width: 95px; padding: 0.65rem 0.5rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius-sm); color: var(--white); font-size: 0.85rem; cursor: pointer;">
+                                <option value="+91">+91 (IN)</option>
+                                <option value="+1">+1 (US)</option>
+                                <option value="+44">+44 (UK)</option>
+                                <option value="+81">+81 (JP)</option>
+                                <option value="+61">+61 (AU)</option>
+                            </select>
+                            <input type="tel" id="auth-input-phone" placeholder="98765 43210" style="flex: 1; padding: 0.65rem 0.85rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius-sm); color: var(--white); font-size: 0.85rem; width: 100%;">
+                        </div>
+                    </div>
+                    
+                    <!-- Send Code Button / SMS verification status block -->
+                    <button type="button" class="btn btn-secondary mb-3" id="btn-auth-send-otp" onclick="sendMockOTP()" style="border: 1px solid rgba(255,255,255,0.12); padding: 0.6rem; font-size: 0.78rem; border-radius: var(--radius-sm); font-weight: 700; color: var(--white); display: flex; align-items: center; justify-content: center; gap: 0.35rem; width: 100%; cursor: pointer;">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        <span id="btn-auth-send-otp-text">Request Verification Code (SMS)</span>
+                    </button>
+
+                    <!-- OTP Code field (hidden initially) -->
+                    <div class="form-group mb-4 hidden" id="auth-group-otp">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+                            <label class="form-label" style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: rgba(255,255,255,0.7); margin: 0;">Enter OTP Code</label>
+                            <span id="auth-otp-timer" style="font-size: 0.72rem; color: #f59e0b; font-weight: 600;"></span>
+                        </div>
+                        <input type="text" id="auth-input-otp" placeholder="Code" maxlength="6" style="width: 100%; padding: 0.65rem 0.85rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius-sm); color: var(--white); font-size: 0.85rem; text-align: center; font-weight: 800;">
+                    </div>
+                </div>
+
+                <!-- Submit / Execute Actions -->
+                <button type="submit" class="btn btn-primary py-3 mb-4" id="btn-auth-submit" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 0.5rem; border-radius: var(--radius-sm); font-weight: 700; font-size: 0.85rem; cursor: pointer;">
+                    <i class="fa-solid fa-lock-open" id="auth-submit-icon"></i>
+                    <span id="btn-auth-submit-text">Verify & Continue</span>
+                </button>
+            </form>
+
+            <!-- Social / Third Party Auth Division line -->
+            <div class="auth-divider mb-4" style="display: flex; align-items: center; text-align: center; gap: 0.5rem;">
+                <hr style="flex: 1; border: none; border-top: 1px solid rgba(255,255,255,0.15);">
+                <span style="font-size: 0.72rem; text-transform: uppercase; color: rgba(255,255,255,0.5); font-weight: 700; letter-spacing: 0.05rem;">Or Connect With</span>
+                <hr style="flex: 1; border: none; border-top: 1px solid rgba(255,255,255,0.15);">
+            </div>
+
+            <!-- Third Party Providers Grid -->
+            <div class="auth-social-actions mb-6">
+                <button type="button" class="btn btn-secondary" onclick="continueWithGoogle()" style="background: #ffffff !important; color: #1f2937 !important; border: 1px solid rgba(0, 0, 0, 0.1) !important; padding: 0.65rem; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; gap: 0.5rem; width: 100%; font-weight: 700; font-size: 0.78rem; cursor: pointer;">
+                    <i class="fa-brands fa-google" style="color: #ea4335;"></i>
+                    <span>Log In / Sign Up with Google</span>
+                </button>
+            </div>
+
+            <!-- Footnote Switcher -->
+            <div class="auth-footer text-center" style="font-size: 0.8rem; color: rgba(255,255,255,0.65); display: flex; justify-content: center; align-items: center;">
+                <span id="auth-footer-prompt">Don't have an account?</span>
+                <button type="button" onclick="toggleAuthMode()" id="auth-footer-toggle" style="background: transparent; border: none; color: #8b5cf6; font-weight: 700; cursor: pointer; text-decoration: underline; padding: 0; margin-left: 0.25rem;">Create Account</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Core App JS Logic -->
+    <script type="module" src="app.js"></script>
+</body>
+</html>
